@@ -1,24 +1,54 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-page-node-id="aN7auR2AVQVHdKLl8QzqAI">
-<head data-page-node-id="GJb1Tg2nTPCpj2KHQn3yiZ">
-<meta charset="UTF-8" data-page-node-id="CWtTD8IY86wPVDZgVmgmAN">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="ykf8oFS4P7CazjfDW6l356">
-<title>排期主表 · 内部伙伴跟进看板 v5</title>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>排期主表 · 内部伙伴跟进看板 v6</title>
 <style>
   :root{--blue:#2f6bff;--blue-d:#2454d6;--pink:#ff8fb3;--pink-l:#fff0f5;--bg:#f5f7fb;--card:#fff;--line:#e6eaf2;
     --text:#1f2329;--sub:#6b7280;--green:#16a34a;--amber:#d97706;--red:#dc2626;--gray:#9ca3af}
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;padding:18px;line-height:1.5}
-  .wrap{max-width:1240px;margin:0 auto}
-  header{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  body{background:var(--bg);color:var(--text);font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;line-height:1.5}
+  /* ===== 工作台布局 v6: 左侧侧栏(品牌+导航) + 右侧内容区 ===== */
+  .wrap{display:flex;min-height:100vh;max-width:1600px;margin:0 auto}
+  .side{flex:0 0 236px;width:236px;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;
+    position:sticky;top:0;height:100vh;padding:16px 12px 12px}
+  .brand{display:flex;align-items:center;gap:10px;padding:2px 6px 14px;border-bottom:1px solid var(--line);margin-bottom:12px}
+  .brand .logo{width:40px;height:40px;flex:0 0 40px}
+  .brand h1{font-size:15.5px;line-height:1.35}
+  .brand .sub{font-size:11px;margin-top:2px;color:var(--sub);line-height:1.5}
+  .side .verTag{margin-top:auto;padding:10px 8px 2px;font-size:11px;color:var(--gray);border-top:1px dashed var(--line);line-height:1.7}
   .logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--blue),#7aa2ff);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
-  h1{font-size:20px}
-  .sub{color:var(--sub);font-size:12.5px;margin:4px 0 4px}
-  .pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;background:var(--pink-l);color:#c2416f;border:1px solid #ffd6e4;margin-left:8px}
-  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}
-  @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;background:var(--pink-l);color:#c2416f;border:1px solid #ffd6e4;margin-left:6px;vertical-align:1px}
+  /* 左侧导航：竖排，WB 工作台式 */
+  #nav{display:flex;flex-direction:column;gap:4px}
+  #nav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:0;background:transparent;
+    padding:11px 14px;border-radius:10px;font-size:14px;cursor:pointer;color:var(--sub);font-weight:500;font-family:inherit}
+  #nav button:hover{background:#f0f5ff;color:var(--blue-d)}
+  #nav button .n{flex:0 0 22px;height:22px;border-radius:7px;background:#eef2fb;color:var(--sub);font-size:12px;font-weight:700;
+    display:inline-flex;align-items:center;justify-content:center}
+  #nav button.on{background:linear-gradient(135deg,var(--blue),#5b8cff);color:#fff;font-weight:600;box-shadow:0 6px 16px rgba(47,107,255,.28)}
+  #nav button.on .n{background:rgba(255,255,255,.22);color:#fff}
+  .main{flex:1 1 auto;min-width:0;padding:16px 22px 8px}
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:2px 0 14px}
+  @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:640px){.kpis{grid-template-columns:repeat(2,1fr)}}
   .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:10px 0}
   @media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
+  section{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
+  section.on{display:block}
+  @media(max-width:980px){
+    .wrap{flex-direction:column}
+    .side{flex:none;width:100%;height:auto;position:static;flex-direction:row;align-items:center;gap:6px;
+      border-right:0;border-bottom:1px solid var(--line);padding:8px 10px;overflow-x:auto}
+    .brand{border-bottom:0;margin:0;padding:0 8px 0 2px;flex:none}
+    .brand h1{font-size:13px}
+    .brand .sub,.side .verTag{display:none}
+    #nav{flex-direction:row;gap:4px}
+    #nav button{width:auto;white-space:nowrap;padding:8px 10px;font-size:13px}
+    #nav button .n{flex:0 0 20px;height:20px;font-size:11px}
+    .main{padding:10px}
+  }
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
   .card .num{font-size:23px;font-weight:700;line-height:1.25}
   .card .num small{font-size:12px;color:var(--sub);font-weight:500}
@@ -26,11 +56,6 @@
   .card .foot{font-size:11px;color:var(--sub);margin-top:2px}
   .card.blue .num{color:var(--blue)} .card.pink .num{color:#d6336c} .card.green .num{color:var(--green)}
   .card.red .num{color:var(--red)} .card.amber .num{color:var(--amber)} .card.gray .num{color:var(--gray)}
-  nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-  nav button{border:1px solid var(--line);background:#fff;padding:8px 16px;border-radius:10px;font-size:14px;cursor:pointer;color:var(--sub)}
-  nav button.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
-  section{display:none;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:16px}
-  section.on{display:block}
   h2{font-size:16px;margin-bottom:4px}
   .hint{font-size:12.5px;color:var(--sub);background:#f8fafd;border:1px dashed #cdd6e6;border-radius:8px;padding:7px 12px;margin:8px 0 12px}
   .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
@@ -137,122 +162,126 @@
   footer{color:var(--sub);font-size:12px;text-align:center;padding:10px 0 4px}
 </style>
 </head>
-<body data-page-node-id="PI81juhiRcwY8Qa3TRWYhR">
-<div class="wrap" data-page-node-id="hII03RFImoEVlHIZNKPNhT">
-<header data-page-node-id="YR0QT82ShRRUJoFCn25bYy">
-  <div class="logo" data-page-node-id="azEbMWSiIJ74k2smiCSnNs">韵</div>
-  <div data-page-node-id="cAdsroxCCUG6Jl4HYsnRor"><h1 data-page-node-id="AmqnJnnOAxIHYyXgnunIZ6">排期主表 · 内部伙伴跟进看板 <span class="pill" data-page-node-id="GHLGoFyW5XAoain8u302xh">v5</span></h1>
-  <div class="sub" data-page-node-id="t1smIfDbpEKhGU2WQNCKM4">数据源：<b data-page-node-id="5NAr3SLBTOHVEFjlDmXAYF">唯一权威映射表</b>「排期主表_权威映射表_0908.json」· 179 行 / 9 个月 · 快照 2026-09-08 15:30 (唯一权威表·179/179 行·线上课程状态/排班确认为准) · 课程状态/排班确认以线上为准</div></div>
-</header>
-
-<div class="kpis" id="kpiCards" data-page-node-id="VVl5keMlc3B4uE4loVPQKy"></div>
-
-<nav id="nav" data-page-node-id="DTBh3kLdOzUBASdMzGxeU9">
-  <button class="on" data-v="person" data-page-node-id="91rCGMcvYtx6NHkOCsCUje">① 我的课表</button>
-  <button data-v="month" data-page-node-id="Yoc6aktYkMRzUtzo8n02ZU">② 月度总览</button>
-  <button data-v="ops" data-page-node-id="kRanQsWwSQD94mANxaYobA">③ 运营统筹</button>
-  <button data-v="gap" data-page-node-id="899zMYDKj9RvDDKIILqkcd">④ 缺人预警</button>
-</nav>
+<body>
+<div class="wrap">
+<aside class="side">
+  <div class="brand">
+    <div class="logo">韵</div>
+    <div><h1>排期主表<br>内部伙伴看板 <span class="pill">v6</span></h1>
+    <div class="sub">179 行 · 09-08 权威映射表<br>课程状态/排班确认以线上为准</div></div>
+  </div>
+  <nav id="nav">
+    <button class="on" data-v="person"><span class="n">1</span>我的课表</button>
+    <button data-v="month"><span class="n">2</span>月度总览</button>
+    <button data-v="ops"><span class="n">3</span>运营统筹</button>
+    <button data-v="gap"><span class="n">4</span>缺人预警</button>
+  </nav>
+  <div class="verTag">数据快照：2026-09-08 15:30 (唯一权威表·179/179 行·线上课程状态/排班确认为准) · 唯一权威表 0908<br>⌁ 每日 10:00 自动核对发布</div>
+</aside>
+<div class="main">
+<div class="kpis" id="kpiCards"></div>
 
 <!-- ① 我的课表 -->
-<section class="on" id="v-person" data-page-node-id="cB0FrtYLnnCUobjlHrd8cR">
-  <h2 data-page-node-id="1wRr9DdPyCZskHfo0Bbntf">① 我的课表 <span style="font-size:12px;color:var(--sub);font-weight:400" data-page-node-id="C32BbKB6YaVNZdiXR0V5tE">（授课老师 / 志愿者 · 输入姓名搜索）</span></h2>
-  <div class="toolbar" data-page-node-id="GCvUWovY33n6BGwxosCA4m">
-    <div class="cbx" id="cbxPerson" data-page-node-id="GqPszEAUypdz7NQCviyzsW">
-      <input id="inPerson" type="text" placeholder="输入姓名搜索，如：侯佳奇 / 龚学群…" autocomplete="off" data-page-node-id="p6Fw4OodKzi06VoU7irOhK">
-      <button class="x" id="cbxClear" title="清空" data-page-node-id="V9pEaduaNkpwNbTIwklgds">✕</button>
-      <div class="dl" id="cbxDl" data-page-node-id="JEO26kHsLWV2aNrOvHwSr9"></div>
+<section class="on" id="v-person">
+  <h2>① 我的课表 <span style="font-size:12px;color:var(--sub);font-weight:400">（授课老师 / 志愿者 · 输入姓名搜索）</span></h2>
+  <div class="toolbar">
+    <div class="cbx" id="cbxPerson">
+      <input id="inPerson" type="text" placeholder="输入姓名搜索，如：侯佳奇 / 龚学群…" autocomplete="off">
+      <button class="x" id="cbxClear" title="清空">✕</button>
+      <div class="dl" id="cbxDl"></div>
     </div>
-    <label style="display:flex;align-items:center;gap:5px;margin-left:4px" data-page-node-id="nVDgYkigXD00JmlK8Xp3Wg"><input type="checkbox" id="chkFuture" checked data-page-node-id="XmTaYQmNj0Yu0OXX3kdN22"> 只看未执行（不含已完成）</label>
+    <label style="display:flex;align-items:center;gap:5px;margin-left:4px"><input type="checkbox" id="chkFuture" checked> 只看未执行（不含已完成）</label>
   </div>
-  <div id="personOut" data-page-node-id="GAq7X5BwK7cUKLTDjakhcn"></div>
+  <div id="personOut"></div>
 </section>
 
 <!-- ② 月度总览 -->
-<section id="v-month" data-page-node-id="xUKNNaGytvbK3lm46PaYNN">
-  <h2 data-page-node-id="wAyk3Task6dAp5qJDi2Wz4">② 月度总览 <span style="font-size:12px;color:var(--sub);font-weight:400" data-page-node-id="20YdvG1s8W0KlmGZKiOQyR">（行政考勤 / 执行参考 · 点行看详情 / 日历格看当天）</span></h2>
-  <div class="toolbar" data-page-node-id="KOGJgCdJQnKu7FW8hkgJuM">
-    <select id="selMonth" data-page-node-id="DH2dv27vs61AQ5FaHlAxUT"></select>
-    <label data-page-node-id="b50b3Fb612YYZo8q0iBnCV">课程状态</label><select id="selStatus" data-page-node-id="Dgwxcl9hMxpR9Gt9JoUYzj"><option value="" data-page-node-id="icWLkrSeiGTioYYHv8w9gX">全部</option><option data-page-node-id="r3G7dSKsgz48tzc67EKHHG">待执行</option><option data-page-node-id="bYdPYQT8l87g9EVN0yllMa">已完成</option><option data-page-node-id="d5LPO9AhwQLBvAozdWdOzt">已取消</option><option data-page-node-id="a8cwazteDY5tBVECsKByk7">延期</option></select>
-    <label data-page-node-id="Mi6kcGnAaVsHA2nKX9khE8">排班确认状态</label><select id="selConfirm" data-page-node-id="HA4OHHDTlfG5clzyXAm9x2"><option value="" data-page-node-id="upyenkFi0SFcwwUvkeQISb">全部</option><option data-page-node-id="QKM9sOSsJoJzXkeKIvolRU">待确认</option><option data-page-node-id="dRYz18PfsPn6pPmHEdeqLi">已确认</option><option data-page-node-id="9nWKEMkpDNEi9QiI20Me9U">需替换</option></select>
-    <div class="vtabs" id="monthVT" data-page-node-id="jPK3K0BY6oiJdErO0vVRlN"><button class="on" data-m="list" data-page-node-id="hAVGwBvlyIf5ESFPn8d3Ur">列表</button><button data-m="cal" data-page-node-id="saF3xmnjjXlnoYDFO5eojD">日历</button></div>
-    <button class="btn primary" id="btnExpView" title="按月度列表所见列导出现筛选范围" data-page-node-id="827fWYwyZtupSUg8TMLgno">📋 一键导出排期表</button>
-    <button class="btn" id="btnExpAll" title="导出全部179场+排期表19列全名" data-page-node-id="2jbBtiVFDifrsjTVzEoKoT">📦 导出全部（排期表19列）</button>
-    <span id="monthStat" style="font-size:12.5px;color:var(--sub)" data-page-node-id="mKXcco5wlQyi9nwMpF7gha"></span>
+<section id="v-month">
+  <h2>② 月度总览 <span style="font-size:12px;color:var(--sub);font-weight:400">（行政考勤 / 执行参考 · 点行看详情 / 日历格看当天）</span></h2>
+  <div class="toolbar">
+    <select id="selMonth"></select>
+    <label>课程状态</label><select id="selStatus"><option value="">全部</option><option>待执行</option><option>已完成</option><option>已取消</option><option>延期</option></select>
+    <label>排班确认状态</label><select id="selConfirm"><option value="">全部</option><option>待确认</option><option>已确认</option><option>需替换</option></select>
+    <div class="vtabs" id="monthVT"><button class="on" data-m="list">列表</button><button data-m="cal">日历</button></div>
+    <button class="btn primary" id="btnExpView" title="按月度列表所见列导出现筛选范围">📋 一键导出排期表</button>
+    <button class="btn" id="btnExpAll" title="导出全部179场+排期表19列全名">📦 导出全部（排期表19列）</button>
+    <span id="monthStat" style="font-size:12.5px;color:var(--sub)"></span>
   </div>
-  <div class="hint" data-page-node-id="8iUt6HAoTDpa0wfa2j5ij8">两筛对应腾讯文档两列：<b data-page-node-id="rFH7ZANfxgq1akP1fyTucq">「课程状态」</b>(待执行/已完成/已取消/延期, 考勤口径) 与 <b data-page-node-id="GpmT3W5BrCgSQxQqJdyD73">「排班确认状态」</b>(待确认/已确认/需替换, 行政口径)。日历用 table 布局, 7 列固定对齐。导出两个: 一键导出按月度列表呈现列序; 导出全部按排期表 19 列全名。</div>
-  <div id="monthList" style="overflow:auto" data-page-node-id="Xp8oHaYPL6We7frmeT2KqH"><table data-page-node-id="pGHxG4RrX7OTc3eUOKHgTt"><thead data-page-node-id="jtUzu8vcgeOs91zX0IxZ08"><tr data-page-node-id="8YXSMgUL2vYeE4Qr2zA0OJ">
-    <th data-page-node-id="OIV8p6lEYkwS2KsnY3BMtO">序号</th><th data-page-node-id="DDgKP7Ag7DBHHtwGhXvxds">日期</th><th data-page-node-id="qXyl3elRk685A9UfFvuGye">星期</th><th data-page-node-id="rNYLALKphSzrvoTyci47Bh">时段</th><th data-page-node-id="CzlPOoHPX1hSImgdAloR4k">教学点</th><th data-page-node-id="Wq5Q8lJ5GHGGmxHxUkx4nG">活动名称</th><th data-page-node-id="jdGardMpgw6elgIvXfXCDi">授课老师</th><th data-page-node-id="gC4WX33S5YnqnWrTFdPel5">志愿者</th><th data-page-node-id="wZTpNAdcXDE1WxbkTRakiP">排班确认</th><th data-page-node-id="CElLdeHd7b3S0LWTUBvdr9">课程状态</th>
-  </tr></thead><tbody id="monthTB" data-page-node-id="urQOaAgvW8sEeNU7o1YddC"></tbody></table></div>
-  <div id="monthCal" style="display:none" data-page-node-id="fosui0PaqC4tjnyGuE9NaB"></div>
+  <div class="hint">两筛对应腾讯文档两列：<b>「课程状态」</b>(待执行/已完成/已取消/延期, 考勤口径) 与 <b>「排班确认状态」</b>(待确认/已确认/需替换, 行政口径)。日历用 table 布局, 7 列固定对齐。导出两个: 一键导出按月度列表呈现列序; 导出全部按排期表 19 列全名。</div>
+  <div id="monthList" style="overflow:auto"><table><thead><tr>
+    <th>序号</th><th>日期</th><th>星期</th><th>时段</th><th>教学点</th><th>活动名称</th><th>授课老师</th><th>志愿者</th><th>排班确认</th><th>课程状态</th>
+  </tr></thead><tbody id="monthTB"></tbody></table></div>
+  <div id="monthCal" style="display:none"></div>
 </section>
 
 <!-- ③ 运营统筹（项目进度 + 风险提示） -->
-<section id="v-ops" data-page-node-id="vigChd9Q86dSGm154xqDW4">
-  <h2 data-page-node-id="jCBO3El4efVJ1Pw0v39hJQ">③ 运营统筹 <span style="font-size:12px;color:var(--sub);font-weight:400" data-page-node-id="oHY4kqI8157myn6lc945Ew">（项目执行进度 + 风险提示）</span></h2>
-  <div class="hint" data-page-node-id="pbAU8m4mNFj7XEhWXSkCYT">本页做<b data-page-node-id="DQao3HDj6WgN5T8gamXYJ9">项目进度汇报与风险提示</b>：①各项目进度条（完成率）②本月教学点分布 ③执行风险提示（超期未完成 / 未来7天待办）。人事缺口预警在「④ 缺人预警」单独看。</div>
-  <div class="panel" data-page-node-id="PpOkrjwhekQOQhFf08CGTb"><h3 data-page-node-id="nBdEIHBabZGrXnoAT2juiZ">📊 项目执行进度（完成率）</h3><div class="use" data-page-node-id="YCP0yVQmfvpVJ7RVnhQaIv">给机构/理事长汇报用：绿=已完成场次、蓝=待执行。完成率=已完成÷该年计划总场次。点条看该项目全部场次。</div>
-    <div id="projBars" data-page-node-id="FZxVt6xs3SjAHOXaTGDSC0"></div>
+<section id="v-ops">
+  <h2>③ 运营统筹 <span style="font-size:12px;color:var(--sub);font-weight:400">（项目执行进度 + 风险提示）</span></h2>
+  <div class="hint">本页做<b>项目进度汇报与风险提示</b>：①各项目进度条（完成率）②本月教学点分布 ③执行风险提示（超期未完成 / 未来7天待办）。人事缺口预警在「④ 缺人预警」单独看。</div>
+  <div class="panel"><h3>📊 项目执行进度（完成率）</h3><div class="use">给机构/理事长汇报用：绿=已完成场次、蓝=待执行。完成率=已完成÷该年计划总场次。点条看该项目全部场次。</div>
+    <div id="projBars"></div>
   </div>
-  <div class="cols" style="margin-top:14px" data-page-node-id="tIKAcJoVYdJIEYx01iKuRj">
-    <div class="panel" data-page-node-id="aPGtPsfA0b7G9MfFtvrP1x"><h3 data-page-node-id="605Y69FtT6iQBw1t3LwPVz">本月教学点分布（2026年9月）</h3><div class="use" data-page-node-id="WuNEzE5GvpjbjwqZ5tsTmG">各教学点本月场次占比，运营看资源是否集中在个别点位、是否需要协调。点条看该点位场次。</div>
-      <div id="siteBars" data-page-node-id="5lOS7woFSuJYwuql1mjJGr"></div>
+  <div class="cols" style="margin-top:14px">
+    <div class="panel"><h3>本月教学点分布（2026年9月）</h3><div class="use">各教学点本月场次占比，运营看资源是否集中在个别点位、是否需要协调。点条看该点位场次。</div>
+      <div id="siteBars"></div>
     </div>
-    <div class="panel" data-page-node-id="mbmwrkWYhEHC4vxVyIuE0I"><h3 data-page-node-id="aHD3YU4uZ0n0zf5bnryfQj">⚠️ 执行风险提示</h3><div class="use" data-page-node-id="9ur2KI0x0VXmjBbxSDi2gR">①已过计划日期仍未完成的场次（超期未销）②未来7天待执行场次（含未排班/未确认者，需提前催办）。</div>
-      <div id="riskBox" data-page-node-id="l2wB51O3xtOjm7jGYFehRN"></div>
+    <div class="panel"><h3>⚠️ 执行风险提示</h3><div class="use">①已过计划日期仍未完成的场次（超期未销）②未来7天待执行场次（含未排班/未确认者，需提前催办）。</div>
+      <div id="riskBox"></div>
     </div>
   </div>
 </section>
 
 <!-- ④ 缺人预警 -->
-<section id="v-gap" data-page-node-id="2EnMDOi0VmLfJ7PjM4cfih">
-  <h2 data-page-node-id="ykaxcXbnrQ0QDUkEnobJyt">④ 缺人预警（人事跟进）</h2>
-  <div class="warn a" data-page-node-id="6BEGR6yuNP4TC0Zr9IQhPF">口径：只看腾讯文档「排班确认状态」=<b data-page-node-id="wLaOJsWhS4VRPOOcjrbCEc">待确认 / 需替换</b> 的场次——已确认/已完成的场次不再出现。其中老师或志愿为「-」未排的即真缺口，标红提示。</div>
-  <div class="cards" id="gapCards" data-page-node-id="VzCaSBFuB7nZoCYzjaiTn2"></div>
-  <div class="cols" data-page-node-id="Uvu5nGZlyhrZXz4m37jh8U">
-    <div data-page-node-id="dtXGjGerLBB5FaBDqtgXM8">
-      <h3 style="font-size:14px" id="gapTTitle" data-page-node-id="p8SQ8dPYN7tZtbx0zYEnaX">缺授课老师</h3>
-      <div style="overflow:auto;max-height:420px" data-page-node-id="7LBvyL0TmEbHaiD2Qsw3Q0"><table id="gapT" data-page-node-id="QWLs5QSFAno6tuD0L3Z6JT"><thead data-page-node-id="JKbbIwzEvmlaR99l1x0zdV"><tr data-page-node-id="hao1JGmdewgjCkwWcaYHj5"><th data-page-node-id="w91hKloqywKfPupCpiBakA">日期</th><th data-page-node-id="VBw29bmJfcrMDNCPuIPRod">教学点</th><th data-page-node-id="i1S1OQZUBy5IwycIuNFAVh">活动名称</th><th data-page-node-id="ADEOIZ9Go1r84bT7vk6r6i">志愿者(已排)</th><th data-page-node-id="cV2FGJky4djTB7rKeU48UC">排班确认</th></tr></thead><tbody data-page-node-id="FHtiNTgcMCDNZYN5VDf7AS"></tbody></table></div>
+<section id="v-gap">
+  <h2>④ 缺人预警（人事跟进）</h2>
+  <div class="warn a">口径：只看腾讯文档「排班确认状态」=<b>待确认 / 需替换</b> 的场次——已确认/已完成的场次不再出现。其中老师或志愿为「-」未排的即真缺口，标红提示。</div>
+  <div class="cards" id="gapCards"></div>
+  <div class="cols">
+    <div>
+      <h3 style="font-size:14px" id="gapTTitle">缺授课老师</h3>
+      <div style="overflow:auto;max-height:420px"><table id="gapT"><thead><tr><th>日期</th><th>教学点</th><th>活动名称</th><th>志愿者(已排)</th><th>排班确认</th></tr></thead><tbody></tbody></table></div>
     </div>
-    <div data-page-node-id="ZEX9yl1Ie29y4Mnm2Hb8By">
-      <h3 style="font-size:14px" id="gapVTitle" data-page-node-id="7L7mLJOFKDUbeO05MJs9g1">缺志愿者</h3>
-      <div style="overflow:auto;max-height:420px" data-page-node-id="ewYRnMTk7I0zpkMfbTJrVr"><table id="gapV" data-page-node-id="ueOk878X89BsWrMaLeiHVA"><thead data-page-node-id="qKVUR2i5AzXOGgzRxhFsjK"><tr data-page-node-id="DYaAje4bi3fFWEFkyOSfPJ"><th data-page-node-id="hK1z34Rr1Sw65PzCZXdSN2">日期</th><th data-page-node-id="3DvvWcONwHZVztcM8WrFkq">教学点</th><th data-page-node-id="jrqy7SL19cjZOv8htEHuC7">活动名称</th><th data-page-node-id="18NbE0FMeEb4wHz35jBrwo">授课老师(已排)</th><th data-page-node-id="CQMF4ptbZzPOcOKB4Emxwu">排班确认</th></tr></thead><tbody data-page-node-id="GrOOoGeFjkok9jzyMvuHAP"></tbody></table></div>
+    <div>
+      <h3 style="font-size:14px" id="gapVTitle">缺志愿者</h3>
+      <div style="overflow:auto;max-height:420px"><table id="gapV"><thead><tr><th>日期</th><th>教学点</th><th>活动名称</th><th>授课老师(已排)</th><th>排班确认</th></tr></thead><tbody></tbody></table></div>
     </div>
   </div>
-  <details class="flat" data-page-node-id="EFwoYW6oKKyCAUqqOzsBec"><summary id="gapOkSum" data-page-node-id="C7E3pnFWjwtvqyP3Wmse7F">已排齐 · 仅待行政确认的场次（点开查看）</summary>
-    <div style="overflow:auto" data-page-node-id="R0OFW0hdgR7hVC8Hsya1EQ"><table data-page-node-id="hZsjNBCCJluiBDhip8ULdx"><thead data-page-node-id="1q2yH5YwHvK5jvmRxWCUuh"><tr data-page-node-id="ES7X1L5aAro5V87hL3ZCIq"><th data-page-node-id="MS1rhPZlLOEbBi52wgmhBW">日期</th><th data-page-node-id="u63FZ9IyXEhT7ca5Vj09AX">星期</th><th data-page-node-id="cJcsgV0p4W09ssCdHuxJjU">时段</th><th data-page-node-id="JPD4wkRJwvtQYxXdzR6pGD">教学点</th><th data-page-node-id="rtsQhRxOztGPuE3pS30irU">活动名称</th><th data-page-node-id="w5nh2GENahv38WYg8s69wo">授课老师</th><th data-page-node-id="gK4x3h3lG7wlCW17hKMJtF">志愿者</th></tr></thead><tbody id="gapOK" data-page-node-id="UyxFp5PiohMi7tR4X3029B"></tbody></table></div>
+  <details class="flat"><summary id="gapOkSum">已排齐 · 仅待行政确认的场次（点开查看）</summary>
+    <div style="overflow:auto"><table><thead><tr><th>日期</th><th>星期</th><th>时段</th><th>教学点</th><th>活动名称</th><th>授课老师</th><th>志愿者</th></tr></thead><tbody id="gapOK"></tbody></table></div>
   </details>
 </section>
 
-<footer data-page-node-id="jteNXD39E71BUoTxUkBLp8">内部伙伴跟进看板 v5 · 天韵公益 · 唯一权威数据源「排期主表_权威映射表_0908.json」(179行 · 09-08 15:30 重建)</footer>
+<footer>内部伙伴跟进看板 v6 · 天韵公益 · 唯一权威数据源「排期主表_权威映射表_0908.json」(179行 · 09-08 15:30 重建)</footer>
+</div>
 </div>
 
 <!-- 启动更新公告弹窗 -->
-<div class="ov" id="helloOv" data-page-node-id="cQ861pDf0rgDU4zmc6isd5"><div class="dlg update" data-page-node-id="h92mQ7Sf5RSsa28eurfGnp">
-  <button class="x" onclick="closeHello(true)" data-page-node-id="PkgNNicBxvuz2UM5A94KE2">✕</button>
-  <h3 data-page-node-id="hT15gFxfeBVGyx9zlKkOPg">📢 看板已更新 <span class="ver" data-page-node-id="WFGS3SaWD1G49sDYlyfU44">v5.1 · 2026-09-08</span></h3>
-  <div class="who" data-page-node-id="wHXAlNZI815927MlNZSdEq"><b data-page-node-id="tUGFtXpRUozUx4ILTXETsN">数据快照：</b>2026-09-08 15:30 (唯一权威表·179/179 行·线上课程状态/排班确认为准) · 179 场 · 课程状态/排班确认以线上腾讯文档为准。打开时若提示“已更新”即每日 10:00 自动任务已发布最新版。</div>
-  <ul data-page-node-id="dVOEMT2KxLXO3XfCcUBEtO">
-    <li data-page-node-id="SPccfdiWvVSCxpj0vF6BE2"><b data-page-node-id="MHVt6CUR6LrdMyzSfwAiDa">① 我的课表</b> —— 输入姓名搜索即可看到个人全部跟课安排（时间/地点/内容/要求），默认只看未执行。</li>
-    <li data-page-node-id="ksDr8p67a42lA52B30NHgR"><b data-page-node-id="ufjgwIlfzBIFsZFVAWpsi5">② 月度总览</b> —— 行政每月考勤参考：列表/日历双视图，点行或日历格看单场完整信息；<b data-page-node-id="dZCeA3F488a68BZpZEcX7T">「一键导出排期表」</b>8列 + 「导出全部」19列。</li>
-    <li data-page-node-id="UOouxaiWmpRgCdoNOTr8TL"><b data-page-node-id="rmOf6jCNledMWIXGBF1OGL">③ 运营统筹</b> —— 项目执行进度（完成率）、本月教学点分布、未来7天待办风险，点柱/点条可下钻场次清单。</li>
-    <li data-page-node-id="90BNRyb1aVjBtmtLQido50"><b data-page-node-id="S1pEFUtLAGwQTt7ZKHuh9X">④ 缺人预警</b> —— 人事跟进：仅“排班确认状态=待确认/需替换”的场次进入预警（缺老师/缺志愿者分开列）。</li>
-    <li data-page-node-id="gL2xE7QFrfweGzbHx6ABng"><b data-page-node-id="9u1yPQpS8R9n2v70uSss90">数据口径</b> —— “未排”=「-」；规范人名“芦琪”；状态列已更名<b data-page-node-id="2tBG34nvChWICf7Gb8BEzy">「课程状态」</b>（待执行/已完成/已取消/延期）；新增<b data-page-node-id="96XovMEVG9yByHHMcXmgUM">「排班确认状态」</b>（待确认/已确认/需替换）。</li>
-    <li data-page-node-id="5VAV29xlWWpViytC0MFxi6"><b data-page-node-id="zjBqnA6JZzGt5vsfrRfkYn">每日自动更新</b> —— 每天 10:00 自动核对腾讯文档排期表与 V5 执行卡，一致后重建并发布本看板。</li>
+<div class="ov" id="helloOv"><div class="dlg update">
+  <button class="x" onclick="closeHello(true)">✕</button>
+  <h3>📢 看板已更新 <span class="ver">v6 · 2026-09-08</span></h3>
+  <div class="who"><b>数据快照：</b>2026-09-08 15:30 (唯一权威表·179/179 行·线上课程状态/排班确认为准) · 179 场 · 课程状态/排班确认以线上腾讯文档为准。打开时若提示“已更新”即每日自动任务已发布最新版。</div>
+  <ul>
+    <li><b>🎛 工作台式布局（v6 新增）</b> —— 功能导航移至<b>左侧栏</b>（我的课表 / 月度总览 / 运营统筹 / 缺人预警），像 WorkBuddy 一样一目了然；右上为主内容区，顶部 KPI 常驻。</li>
+    <li><b>① 我的课表</b> —— 输入姓名搜索即可看到个人全部跟课安排（时间/地点/内容/要求），默认只看未执行。</li>
+    <li><b>② 月度总览</b> —— 行政每月考勤参考：列表/日历双视图，点行或日历格看单场完整信息；<b>「一键导出排期表」</b>8列 + 「导出全部」19列。</li>
+    <li><b>③ 运营统筹</b> —— 项目执行进度（完成率）、本月教学点分布、未来7天待办风险，点柱/点条可下钻场次清单。</li>
+    <li><b>④ 缺人预警</b> —— 人事跟进：仅“排班确认状态=待确认/需替换”的场次进入预警（缺老师/缺志愿者分开列）。</li>
+    <li><b>数据口径</b> —— “未排”=「-」；规范人名“芦琪”；状态列已更名<b>「课程状态」</b>（待执行/已完成/已取消/延期）；新增<b>「排班确认状态」</b>（待确认/已确认/需替换）。</li>
+    <li><b>每日自动更新</b> —— 每天自动核对腾讯文档排期表与 V5 执行卡，一致后重建并发布本看板。</li>
   </ul>
-  <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px;align-items:center" data-page-node-id="GyLhHY5Ou8QKkawcuadlrB">
-    <label style="font-size:12px;color:var(--sub);display:flex;align-items:center;gap:4px" data-page-node-id="8I9RZ91fHnxZDr6DiXFoUf"><input type="checkbox" id="ckToday" data-page-node-id="G2422frT4tWVj4GFmuvz2G"> 今日不再提示</label>
-    <button class="btn primary" onclick="closeHello(true)" data-page-node-id="21xWErbZoIPrAD0umVWfF6">我知道了</button>
+  <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px;align-items:center">
+    <label style="font-size:12px;color:var(--sub);display:flex;align-items:center;gap:4px"><input type="checkbox" id="ckToday"> 今日不再提示</label>
+    <button class="btn primary" onclick="closeHello(true)">我知道了</button>
   </div>
 </div></div>
 
 <!-- 详情弹窗 -->
-<div class="ov" id="detailOv" data-page-node-id="Eu0ifY75d3XoBD4ptmkN4i"><div class="dlg" data-page-node-id="rtIgpGAtHfq7qgGShXwZF4">
-  <button class="x" onclick="closeDetail()" data-page-node-id="sER6h4cBHgHq87WY49o3sE">✕</button>
-  <h3 id="dlgName" data-page-node-id="Hoy9b2ikXG04m8KlHJekva"></h3>
-  <div id="dlgSub" style="font-size:12.5px;color:var(--sub)" data-page-node-id="lYXGLl0wzOD1JumxyvETyk"></div>
-  <table class="kv" id="dlgBody" data-page-node-id="OBelBJYQ9aN4ztEtZDNJY9"></table>
-  <div style="margin-top:10px;text-align:right" data-page-node-id="lHHWQJKpaSrLjyFm7NZuVD"><button class="btn" onclick="closeDetail()" data-page-node-id="VOpZ0NhtKPfh6LeHrOmwmc">关闭</button></div>
+<div class="ov" id="detailOv"><div class="dlg">
+  <button class="x" onclick="closeDetail()">✕</button>
+  <h3 id="dlgName"></h3>
+  <div id="dlgSub" style="font-size:12.5px;color:var(--sub)"></div>
+  <table class="kv" id="dlgBody"></table>
+  <div style="margin-top:10px;text-align:right"><button class="btn" onclick="closeDetail()">关闭</button></div>
 </div></div>
 
 <script>
@@ -591,7 +620,7 @@ document.querySelectorAll('#nav button').forEach(b=>{
 
 /* 启动更新公告弹窗：当日首次打开显示；勾选「今日不再提示」或点✕后本日不再弹 */
 (function(){
-  const KEY='kb_v5_hello';
+  const KEY='kb_v6_hello';
   const today=new Date();
   const ds=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
   try{
