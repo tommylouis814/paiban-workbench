@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>排期主表 · 看板使用手册与更新 SOP</title>
+<title>排期主表 · 看板使用手册（公开版）</title>
 <style>
   :root{--blue:#2f6bff;--blue-d:#2454d6;--pink:#ff8fb3;--pink-l:#fff0f5;--bg:#f5f7fb;--card:#fff;--line:#e6eaf2;
     --text:#1f2329;--sub:#6b7280;--gray:#9ca3af}
@@ -35,6 +35,21 @@
   .toc{background:#f8fafd;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0 16px;font-size:13px}
   .toc a{color:var(--blue-d);text-decoration:none;display:inline-block;margin:2px 8px 2px 0}
   .toc a:hover{text-decoration:underline}
+  hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+  /* 更新弹窗（同看板风格） */
+  .ov{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:6vh 16px;overflow:auto}
+  .ov.on{display:flex}
+  .dlg{background:#fff;border-radius:14px;max-width:640px;width:100%;padding:18px 20px;box-shadow:0 20px 60px rgba(15,23,42,.3)}
+  .dlg .x{float:right;border:0;background:#f3f4f6;color:var(--sub);width:26px;height:26px;border-radius:8px;cursor:pointer;font-size:12px}
+  .dlg h3{display:flex;align-items:center;gap:8px;font-size:16px;margin:0 0 8px;color:var(--text)}
+  .dlg .ver{background:var(--blue);color:#fff;font-size:12px;border-radius:20px;padding:1px 10px;font-weight:600}
+  .dlg ul{margin:8px 0 4px;padding-left:4px;list-style:none}
+  .dlg li{font-size:13px;padding:5px 0 5px 20px;position:relative;border-bottom:1px dashed #eef1f6}
+  .dlg li:last-child{border-bottom:0}
+  .dlg li b{color:var(--blue-d)}
+  .dlg li::before{content:'✓';position:absolute;left:2px;color:#22a06b;font-weight:700}
+  .dlg .who{font-size:11.5px;color:var(--sub);background:#f8fafd;border-radius:8px;padding:7px 12px;margin-top:6px;line-height:1.8}
+  .dlg .act{display:flex;justify-content:flex-end;margin-top:12px}
   .foot{text-align:center;color:var(--gray);font-size:12px;padding:8px 0 24px}
 </style>
 </head>
@@ -43,16 +58,16 @@
   <div class="logo">韵</div>
   <div>
     <h1>排期主表 · 内部伙伴跟进看板 — 使用手册</h1>
-    <div class="sub">v5.2 · 2026-09-08 · 天韵公益 · 公开给所有协作方查看</div>
+    <div class="sub">公开版 v2 · 2026-09-08 · 天韵公益 · 公开给所有协作方查看（不含内部 SOP）</div>
   </div>
   <div class="go">
     <a class="btn p" href="https://tommylouis814.github.io/paiban-workbench/" target="_blank">打开看板 →</a>
   </div>
 </div>
 <div class="wrap" id="content">
-<h2>排期主表 · 内部伙伴跟进看板 — 使用手册与更新 SOP</h2>
+<h2>排期主表 · 内部伙伴跟进看板 — 使用手册</h2>
 <p>&gt; 版本：v5.2 ｜ 更新日期：2026-09-08 ｜ 天韵公益 &gt; 对外访问链接：<b>https://tommylouis814.github.io/paiban-workbench/</b>（GitHub Pages 永久链接，更新后 1-3 分钟生效） &gt; 数据底座：腾讯文档智能表「排期主表（填写）」179 场 · 覆盖 2026-03-01 ~ 2026-11-14</p>
-<p>---</p>
+<hr>
 <h3>〇、一张图看懂数据怎么流</h3>
 <pre><code>腾讯文档「排期主表」（所有更新的源头，唯一填写入口）
         │  ① 行政回填：课程状态 / 排班确认状态
@@ -68,7 +83,7 @@
   ③ 运营统筹 → 机构管理汇报
   ④ 缺人预警 → 人事跟进</code></pre>
 <p><b>核心原则：腾讯文档只做"填写"，看板只做"汇总查看"。</b> 所有人在腾讯文档改完 → 第二天 10:00 看板自动更新；紧急要看最新，可让管理员手动重跑一次（见文末 §六）。</p>
-<p>---</p>
+<hr>
 <h3>一、四个页面对应谁看、解决什么</h3>
 <table class="mt"><thead><tr>
 <th>页面</th>
@@ -80,7 +95,7 @@
 <tr><td><b>③ 运营统筹</b></td><td>机构负责人、项目统筹</td><td>项目执行进度（各项目完成率）、本月各教学点分布、未来 7 天待办风险，用于统筹与对外汇报</td></tr>
 <tr><td><b>④ 缺人预警</b></td><td>人事、排班协调</td><td>只看"排班还没最终确认"的场次，找出真缺授课老师/志愿者的课，及时补人沟通</td></tr>
 </tbody></table>
-<p>---</p>
+<hr>
 <h3>二、各部门 / 角色 · 在腾讯文档里怎么更新（重点！）</h3>
 <p>&gt; 腾讯文档地址（管理员私发，勿外传编辑权限）：排期主表（填写）表 &gt; 看板显示的所有内容都来自这一张表，<b>改表里的字段 = 改看板</b>。</p>
 <h4>👩‍🏫 授课老师 / 志愿者</h4>
@@ -110,7 +125,7 @@
 <li>排期表里「项目名称=老西门街道·社群和鸣」的场次日期/时间/地点，<b>必须与 V5 执行卡一致</b>。</li>
 <li>改动 V5 执行卡计划 → 同步到腾讯排期表对应行（或先与统筹确认）；每日自动任务会<b>双重核对两处是否一致</b>，发现冲突会停止更新并提醒，不会直接发布错误数据。</li>
 </ul>
-<p>---</p>
+<hr>
 <h3>三、填表红线（容易踩的坑）</h3>
 <table class="mt"><thead><tr>
 <th>❌ 不要做</th>
@@ -123,7 +138,7 @@
 <tr><td>自行删行、改活动名称结构</td><td>只改自己职责内字段，结构问题找管理员</td></tr>
 <tr><td>把"卢琪"打成"卢琪/芦淇"等</td><td>统一用「芦琪」</td></tr>
 </tbody></table>
-<p>---</p>
+<hr>
 <h3>四、导出功能（给行政/人事的底表）</h3>
 <p>在「② 月度总览」页：</p>
 <ul>
@@ -131,7 +146,7 @@
 <p>（时间=日期，地点=教学点，时段=上午/下午/晚上 + 几点到几点）</p>
 <li><b>📦 导出全部（排期表 19 列）</b>：179 场全量，列名与腾讯排期表 19 列完全一致，适合做全量底表。</li>
 </ul>
-<p>---</p>
+<hr>
 <h3>五、表头 KPI 口径（对外说明用）</h3>
 <table class="mt"><thead><tr>
 <th>指标</th>
@@ -142,35 +157,37 @@
 <tr><td>上月/本月 完成/计划</td><td>对应自然月内已完成场次 / 当月全部场次</td></tr>
 <tr><td>本月待确认人员场次</td><td>本月内「排班确认状态=待确认」的场次（含需替换）</td></tr>
 </tbody></table>
-<p>---</p>
-<h3>六、手动刷新（等不及每日 10:00 时）</h3>
-<p>管理员在电脑上执行（约 1 分钟）：</p>
-<pre><code>cd &quot;d:\maia装机软件\WorkBuddy data\2026-09-04-23-37-20&quot;
-&quot;C:\Users\maia\.workbuddy\binaries\python\envs\default\Scripts\python.exe&quot; gen_dashboard_v5.py          # 1. 重建 HTML
-copy /Y 排期主表_内部伙伴跟进看板_正式版.html github_deploy\index.html     # 2. 覆盖 GitHub 发布区
-&quot;C:\Users\maia\.workbuddy\binaries\python\envs\default\Scripts\python.exe&quot; publish_paiban_github.py     # 3. 推送到 GitHub Pages（1-3 分钟生效）</code></pre>
-<p>&gt; 自动任务由 WorkBuddy 平台托管：每天 10:00 拉线上 → 双重核对（<b>腾讯排期表 t00i2h ↔ 老西门 V5 进度表·执行卡</b>）→ 一致则重建 + GitHub 发布；冲突则跳过发布并输出差异报告。 &gt; 核对基准文件：<code>排期主表_权威映射表_0908.json</code>（179 行本地基准）+ <code>v5_execution_cards.json</code>（V5 xlsx 执行卡解析，79 条）</p>
-<p>---</p>
-<h3>SOP 速查表（给各岗位贴墙用）</h3>
-<table class="mt"><thead><tr>
-<th>#</th>
-<th>角色</th>
-<th>何时做</th>
-<th>做什么</th>
-<th>在哪做</th>
-</tr></thead><tbody>
-<tr><td>SOP-1</td><td>排班协调人</td><td>每次排班后</td><td>填「授课老师」「志愿者」（多选，未排=「-」）</td><td>腾讯排期表对应行</td></tr>
-<tr><td>SOP-2</td><td>排班协调人</td><td>人员定稿后</td><td>「排班确认状态」→已确认；换人→需替换</td><td>腾讯排期表对应行</td></tr>
-<tr><td>SOP-3</td><td>行政</td><td>每场课后</td><td>「课程状态」→已完成/已取消/延期</td><td>腾讯排期表对应行</td></tr>
-<tr><td>SOP-4</td><td>行政</td><td>每月初/月末</td><td>②月度总览导出 CSV，做考勤留档</td><td>看板</td></tr>
-<tr><td>SOP-5</td><td>老师/志愿者</td><td>每周五或课前</td><td>①我的课表查下周自己安排</td><td>看板</td></tr>
-<tr><td>SOP-6</td><td>人事</td><td>每天/每周</td><td>④缺人预警找「-」真缺口，补人沟通</td><td>看板</td></tr>
-<tr><td>SOP-7</td><td>项目统筹</td><td>例会/汇报前</td><td>③运营统筹看进度、点位、未来7天风险</td><td>看板</td></tr>
-<tr><td>SOP-8</td><td>老西门项目</td><td>计划变更时</td><td>V5执行卡与排期表同步修改，保持两处一致</td><td>V5进度表 + 腾讯排期表</td></tr>
-<tr><td>SOP-9</td><td>管理员</td><td>每日 10:00（自动）</td><td>双重核对→重建→发布</td><td>自动任务</td></tr>
-<tr><td>SOP-10</td><td>管理员</td><td>紧急更新时</td><td>手动重跑 §六 流程</td><td>本地脚本 + 发布</td></tr>
-</tbody></table>
+<hr>
 </div>
-<div class="foot">📎 看板数据底座：腾讯文档智能表「排期主表」179 场 · 覆盖 2026-03-01 ~ 2026-11-14 · 自动每日核对发布</div>
+<div class="foot">📎 看板数据底座：腾讯文档智能表「排期主表」179 场 · 覆盖 2026-03-01 ~ 2026-11-14 · 每日自动核对更新</div>
+
+<!-- 更新弹窗（当日仅提示一次） -->
+<div class="ov" id="helloOv"><div class="dlg">
+  <button class="x" onclick="closeHello(true)">✕</button>
+  <h3>📢 使用手册已更新 <span class="ver">v6 配套 · 2026-09-08</span></h3>
+  <ul>
+    <li><b>本页为对外公开版</b> —— 无需登录，把链接直接发给协作方 / 新同事即可；已去除内部 SOP 与管理员运维内容。</li>
+    <li><b>看板已升级「左侧工作台」布局</b> —— 我的课表 / 月度总览 / 运营统筹 / 缺人预警 四大页面在左侧一目了然。</li>
+    <li><b>月度总览新增 4 个快捷入口</b> —— 📃列表 / 🗓日历 / 📋一键导出排期表 / 📦导出全部。</li>
+    <li><b>数据每日自动核对</b> —— 腾讯排期表 + 老西门 V5 执行卡，两边一致才重建发布；有差异会提示人工确认。</li>
+    <li>收藏链接：看板 https://tommylouis814.github.io/paiban-workbench/ ｜ 手册即本页</li>
+  </ul>
+  <div class="who">本提示仅当天首次打开弹出，之后当日不再打扰。</div>
+  <div class="act"><button class="btn p" onclick="closeHello(true)">我知道了</button></div>
+</div></div>
+
+<script>
+
+(function(){
+  var KEY='kb_manual_hello_v2', d=new Date(),
+      ds=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+  var ov=document.getElementById('helloOv');
+  window.closeHello=function(save){ ov.classList.remove('on'); if(save){try{localStorage.setItem(KEY,ds);}catch(e){}} };
+  ov.addEventListener('click',function(e){ if(e.target===ov) window.closeHello(true); });
+  var seen=''; try{ seen=localStorage.getItem(KEY)||''; }catch(e){}
+  if(seen!==ds){ ov.classList.add('on'); }
+})();
+
+</script>
 </body>
 </html>
