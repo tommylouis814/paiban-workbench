@@ -29,6 +29,13 @@
     display:inline-flex;align-items:center;justify-content:center}
   #nav button.on{background:linear-gradient(135deg,var(--blue),#5b8cff);color:#fff;font-weight:600;box-shadow:0 6px 16px rgba(47,107,255,.28)}
   #nav button.on .n{background:rgba(255,255,255,.22);color:#fff}
+  /* 月度总览下子项 */
+  .subgroup{display:flex;flex-direction:column;gap:2px;margin:2px 0 8px 14px;padding-left:10px;border-left:1px solid #e2e6f0}
+  #nav button.sub{font-size:12.5px;padding:7px 12px;color:var(--sub);background:transparent;border-radius:8px;font-weight:400;width:auto;letter-spacing:.2px}
+  #nav button.sub .sub-ico{display:inline-block;width:18px;color:var(--gray);font-size:12px}
+  #nav button.sub:hover{background:#eef3ff;color:var(--blue-d)}
+  #nav button.sub.sub-on{background:#eaf0ff;color:var(--blue-d);font-weight:600}
+  #nav button.sub.sub-on .sub-ico{color:var(--blue)}
   .main{flex:1 1 auto;min-width:0;padding:16px 22px 8px}
   .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:2px 0 14px}
   @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}}
@@ -173,6 +180,12 @@
   <nav id="nav">
     <button class="on" data-v="person"><span class="n">1</span>我的课表</button>
     <button data-v="month"><span class="n">2</span>月度总览</button>
+    <div class="subgroup" id="monthSubs">
+      <button class="sub" data-sub="list"><span class="sub-ico">📃</span>列表</button>
+      <button class="sub" data-sub="cal"><span class="sub-ico">🗓</span>日历</button>
+      <button class="sub" data-sub="expV"><span class="sub-ico">📋</span>一键导出排期表</button>
+      <button class="sub" data-sub="expAll"><span class="sub-ico">📦</span>导出全部</button>
+    </div>
     <button data-v="ops"><span class="n">3</span>运营统筹</button>
     <button data-v="gap"><span class="n">4</span>缺人预警</button>
   </nav>
@@ -609,13 +622,40 @@ function openList(title,subtitle,rowsArr){
   }).join('')||'<tr><td colspan="7" class="empty">无</td></tr>';
 })();
 
-/* nav */
-document.querySelectorAll('#nav button').forEach(b=>{
+/* nav 主按钮 */
+document.querySelectorAll('#nav button[data-v]').forEach(b=>{
   b.onclick=()=>{
-    document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('#nav button[data-v]').forEach(x=>x.classList.remove('on'));
     document.querySelectorAll('section').forEach(x=>x.classList.remove('on'));
     b.classList.add('on');$('v-'+b.dataset.v).classList.add('on');
+    // 切到月度总览时，如之前已选过子项则保持高亮；否则不高亮任何子项
+    if(b.dataset.v!=='month'){
+      document.querySelectorAll('#nav .sub').forEach(x=>x.classList.remove('sub-on'));
+    }
   };
+});
+
+/* 月度总览下子项：列表 / 日历 / 一键导出 / 导出全部 */
+window.goMonth=function(sub){
+  // 1) 切到月度总览 section
+  document.querySelectorAll('#nav button[data-v]').forEach(x=>x.classList.remove('on'));
+  document.querySelectorAll('section').forEach(x=>x.classList.remove('on'));
+  document.querySelector('#nav button[data-v="month"]').classList.add('on');
+  $('v-month').classList.add('on');
+  // 2) 子项高亮
+  document.querySelectorAll('#nav .sub').forEach(x=>x.classList.remove('sub-on'));
+  if(sub){
+    const sb=document.querySelector('#nav .sub[data-sub="'+sub+'"]');
+    if(sb)sb.classList.add('sub-on');
+  }
+  // 3) 触发动作
+  if(sub==='list'){const b=document.querySelector('#monthVT button[data-m="list"]');if(b)b.click();}
+  else if(sub==='cal'){const b=document.querySelector('#monthVT button[data-m="cal"]');if(b)b.click();}
+  else if(sub==='expV'){if(typeof $('btnExpView').onclick==='function')$('btnExpView').onclick();}
+  else if(sub==='expAll'){if(typeof $('btnExpAll').onclick==='function')$('btnExpAll').onclick();}
+};
+document.querySelectorAll('#nav .sub').forEach(b=>{
+  b.onclick=()=>window.goMonth(b.dataset.sub);
 });
 
 /* 启动更新公告弹窗：当日首次打开显示；勾选「今日不再提示」或点✕后本日不再弹 */
